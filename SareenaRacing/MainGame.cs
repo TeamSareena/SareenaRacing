@@ -4,15 +4,18 @@
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
     using SareenaRacing.Menus;
-
+    using System.Threading;
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
     public class MainGame : Game
     {
+        public const int GAME_WIDTH = 800;
+        public const int GAME_HEIGHT = 600;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D backgroundTexture;
+        //Texture2D backgroundTexture;
         private StartScreen startScreen;
         private EndScreen endScreen;
 
@@ -21,6 +24,9 @@
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = GAME_WIDTH;
+            graphics.PreferredBackBufferHeight = GAME_HEIGHT;
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -34,11 +40,11 @@
             // TODO: Add your initialization logic here
 
             //changing screen size
-            this.graphics.PreferredBackBufferWidth = 800;
-            this.graphics.PreferredBackBufferHeight = 600;
-            this.graphics.ApplyChanges();
+            //this.graphics.PreferredBackBufferWidth = 800;
+            //this.graphics.PreferredBackBufferHeight = 600;
+            //this.graphics.ApplyChanges();
 
-            MenuManager.gameStartOn = true;
+            MenuManager.endGameMenuOn = true;
             startScreen = new StartScreen();
             endScreen = new EndScreen();
 
@@ -55,10 +61,11 @@
             spriteBatch = new SpriteBatch(GraphicsDevice);
             startScreen.Load(Content);
             endScreen.Load(Content);
+            //DrawRect.LoadContent(Content);
 
 
             //loading background image
-            this.backgroundTexture = this.Content.Load<Texture2D>(@"startBackground");
+            //this.backgroundTexture = this.Content.Load<Texture2D>(@"startBackground");
 
             //changing screen size
             //this.graphics.PreferredBackBufferWidth = this.backgroundTexture.Width;
@@ -84,8 +91,8 @@
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
 
             // TODO: Add your update logic here
 
@@ -97,7 +104,17 @@
             {
                 endScreen.Update(gameTime, this);
             }
-
+            else
+            {
+                //if (mainPlayer.playerHP <= 0)
+                //{
+                //    endScreen.UpdateScoreboard(mainPlayer.playerScore);
+                //    Thread.Sleep(100);
+                //    MenuManager.endGameMenuOn = true;
+                //    MenuManager.mainMenuOn = false;
+                //    MenuManager.TurnOtherMenusOff();
+                //}
+            }
 
             base.Update(gameTime);
         }
@@ -118,15 +135,18 @@
             {
                 endScreen.Draw(spriteBatch);
             }
+            else
+            {
 
-            this.spriteBatch.Begin();
 
-            //drawing background image
-            this.spriteBatch.Draw(backgroundTexture, new Rectangle(0, 0, backgroundTexture.Width, backgroundTexture.Height), Color.White);
-            this.spriteBatch.End();
+                this.spriteBatch.Begin();
 
-            // TODO: Add your drawing code here
+                //drawing background image
+                //this.spriteBatch.Draw(backgroundTexture, new Rectangle(0, 0, backgroundTexture.Width, backgroundTexture.Height), Color.White);
+                this.spriteBatch.End();
 
+                // TODO: Add your drawing code here
+            }
             base.Draw(gameTime);
         }
     }
